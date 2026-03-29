@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meilleur Passeur FIFA 2026</title>
+</head>
+<body style="margin:0;padding:0;background:#fff;">
+<div id="wc-quiz">
+<style>
+#wc-quiz{max-width:820px;margin:0 auto;background:#fff;font-family:'Segoe UI',Arial,Helvetica,sans-serif;color:#1a1a2e;line-height:1.4}
+#wc-quiz *{box-sizing:border-box;margin:0;padding:0}
+#wc-quiz .wc-hdr{border-radius:12px 12px 0 0;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;text-align:center;padding:24px 16px 18px}
+#wc-quiz .wc-hdr h1{font-size:20px;font-weight:800;letter-spacing:1px;margin-bottom:4px}
+#wc-quiz .wc-hdr h1 span{color:#e2b714}
+#wc-quiz .wc-hdr p{font-size:12px;opacity:.75;margin-top:6px}
+#wc-quiz .wc-toolbar{display:flex;justify-content:center;align-items:center;gap:12px;padding:10px 16px;background:#f8f9fa;border-bottom:1px solid #e9ecef;flex-wrap:wrap}
+#wc-quiz .wc-btn{padding:6px 16px;border:1px solid #dee2e6;border-radius:20px;background:#fff;color:#495057;font-size:11px;cursor:pointer;font-weight:600;transition:all .2s}
+#wc-quiz .wc-btn:hover{background:#e3f2fd;border-color:#90caf9;color:#1565c0}
+#wc-quiz .wc-btn-share{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+#wc-quiz .wc-btn-share:hover{background:#0f3460;border-color:#0f3460;color:#fff}
+#wc-quiz .wc-btn-share.wc-copied{background:#66bb6a;border-color:#66bb6a;color:#fff}
+#wc-quiz .wc-search{padding:10px 16px;background:#fff;border-bottom:1px solid #e9ecef}
+#wc-quiz .wc-search input{width:100%;padding:8px 12px;border:1px solid #dee2e6;border-radius:20px;font-size:12px;outline:none;transition:border .2s}
+#wc-quiz .wc-search input:focus{border-color:#90caf9}
+#wc-quiz .wc-section{padding:12px 16px}
+#wc-quiz .wc-selected-banner{background:#fffde7;border:2px solid #e2b714;border-radius:10px;padding:12px 16px;margin:12px 16px;display:flex;align-items:center;gap:12px;font-weight:700;font-size:14px}
+#wc-quiz .wc-selected-banner.wc-hidden{display:none}
+#wc-quiz .wc-selected-banner .wc-trophy{font-size:28px}
+#wc-quiz .wc-selected-name{color:#1a1a2e}
+#wc-quiz .wc-selected-team{font-size:11px;color:#6c757d;font-weight:400;margin-top:2px}
+#wc-quiz .wc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 16px}
+@media(max-width:700px){#wc-quiz .wc-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:450px){#wc-quiz .wc-grid{grid-template-columns:repeat(2,1fr)}}
+#wc-quiz .wc-card{border:2px solid #e9ecef;border-radius:10px;padding:10px 8px;cursor:pointer;transition:all .2s;text-align:center;user-select:none;position:relative}
+#wc-quiz .wc-card:hover{border-color:#90caf9;background:#f0f7ff;transform:translateY(-1px)}
+#wc-quiz .wc-card.wc-selected{border-color:#e2b714;background:#fffde7;box-shadow:0 2px 8px rgba(226,183,20,.3)}
+#wc-quiz .wc-card.wc-selected::after{content:'🎯';position:absolute;top:4px;right:6px;font-size:12px}
+#wc-quiz .wc-card.wc-hidden{display:none}
+#wc-quiz .wc-card-flag{margin:0 auto 6px;display:block}
+#wc-quiz .wc-card-name{font-size:11px;font-weight:700;color:#1a1a2e;line-height:1.3;margin-bottom:3px}
+#wc-quiz .wc-card-team{font-size:10px;color:#6c757d;display:flex;align-items:center;justify-content:center;gap:4px}
+#wc-quiz .wc-flag{width:20px;height:14px;object-fit:cover;border-radius:2px;border:1px solid #eee;vertical-align:middle}
+#wc-quiz .wc-no-results{text-align:center;color:#adb5bd;font-size:13px;padding:30px;display:none}
+</style>
+
+<div class="wc-hdr">
+  <h1>🎯 MEILLEUR PASSEUR <span>FIFA 2026™</span></h1>
+  <p>Coupe du Monde — Canada · Mexique · États-Unis</p>
+  <p style="margin-top:8px;font-size:11px">Qui sera le meilleur passeur du tournoi ? Faites votre pronostic</p>
+</div>
+
+<div class="wc-toolbar">
+  <button class="wc-btn wc-btn-share" id="wc-btn-share" onclick="Q.share()">📤 Partager mon pronostic</button>
+  <button class="wc-btn" onclick="Q.reset()">Réinitialiser</button>
+</div>
+
+<div class="wc-search">
+  <input type="text" id="wc-search-input" placeholder="🔍 Rechercher un joueur ou une équipe..." oninput="Q.filter(this.value)">
+</div>
+
+<div class="wc-selected-banner wc-hidden" id="wc-banner">
+  <span class="wc-trophy">🏆</span>
+  <div>
+    <div class="wc-selected-name" id="wc-banner-name"></div>
+    <div class="wc-selected-team" id="wc-banner-team"></div>
+  </div>
+</div>
+
+<div class="wc-grid" id="wc-grid"></div>
+<div class="wc-no-results" id="wc-no-results">Aucun joueur trouvé</div>
+
+<script>
+(function(){
+'use strict';
+
+var PLAYERS=[
+  {id:'mbappe',  name:'Kylian Mbappé',       team:'France',        flag:'fr'},
+  {id:'haaland', name:'Erling Haaland',       team:'Norvège',       flag:'no'},
+  {id:'vinicius',name:'Vinicius Jr',           team:'Brésil',        flag:'br'},
+  {id:'yamal',   name:'Lamine Yamal',          team:'Espagne',       flag:'es'},
+  {id:'kane',    name:'Harry Kane',            team:'Angleterre',    flag:'gb-eng'},
+  {id:'ronaldo', name:'Cristiano Ronaldo',     team:'Portugal',      flag:'pt'},
+  {id:'salah',   name:'Mohamed Salah',         team:'Égypte',        flag:'eg'},
+  {id:'bellingham',name:'Jude Bellingham',     team:'Angleterre',    flag:'gb-eng'},
+  {id:'julian',  name:'Julián Álvarez',        team:'Argentine',     flag:'ar'},
+  {id:'darwin',  name:'Darwin Núñez',          team:'Uruguay',       flag:'uy'},
+  {id:'gakpo',   name:'Cody Gakpo',            team:'Pays-Bas',      flag:'nl'},
+  {id:'son',     name:'Son Heung-min',         team:'Corée du Sud',  flag:'kr'},
+  {id:'mane',    name:'Sadio Mané',            team:'Sénégal',       flag:'sn'},
+  {id:'pulisic', name:'Christian Pulisic',     team:'États-Unis',    flag:'us'},
+  {id:'lukaku',  name:'Romelu Lukaku',         team:'Belgique',      flag:'be'},
+  {id:'lozano',  name:'Hirving Lozano',        team:'Mexique',       flag:'mx'},
+  {id:'richarlison',name:'Richarlison',        team:'Brésil',        flag:'br'},
+  {id:'kubo',    name:'Takefusa Kubo',         team:'Japon',         flag:'jp'},
+  {id:'davies',  name:'Alphonso Davies',       team:'Canada',        flag:'ca'},
+  {id:'leao',    name:'Rafael Leão',           team:'Portugal',      flag:'pt'},
+  {id:'hakimi',  name:'Achraf Hakimi',         team:'Maroc',         flag:'ma'},
+  {id:'musiala', name:'Jamal Musiala',         team:'Allemagne',     flag:'de'},
+  {id:'wirtz',   name:'Florian Wirtz',         team:'Allemagne',     flag:'de'},
+  {id:'griezmann',name:'Antoine Griezmann',    team:'France',        flag:'fr'},
+  {id:'pedri',   name:'Pedri',                 team:'Espagne',       flag:'es'},
+  {id:'valverde',name:'Federico Valverde',     team:'Uruguay',       flag:'uy'},
+  {id:'osimhen', name:'Victor Osimhen',        team:'Algérie',       flag:'dz'},
+  {id:'ziyech',  name:'Hakim Ziyech',          team:'Maroc',         flag:'ma'},
+  {id:'lautaro', name:'Lautaro Martínez',      team:'Argentine',     flag:'ar'},
+  {id:'foden',   name:'Phil Foden',            team:'Angleterre',    flag:'gb-eng'},
+  {id:'dembele', name:'Ousmane Dembélé',       team:'France',        flag:'fr'},
+  {id:'colassin',name:'Dodi Lukebakio',        team:'Belgique',      flag:'be'}
+];
+
+var LS_KEY='wc2026_passeur';
+var selected=null;
+
+function flag(iso){
+  return '<img src="https://flagcdn.com/w40/'+iso+'.png" width="28" height="20" class="wc-flag wc-card-flag" alt="" loading="lazy" onerror="this.style.display=\'none\'">';
+}
+
+function encodeState(){
+  try{return btoa(unescape(encodeURIComponent(JSON.stringify({s:selected}))));}catch(e){return null;}
+}
+function decodeState(enc){
+  try{var o=JSON.parse(decodeURIComponent(escape(atob(enc))));selected=o.s||null;return true;}catch(e){return false;}
+}
+function saveLocal(){try{var s=encodeState();if(s)localStorage.setItem(LS_KEY,s);}catch(e){}}
+function loadLocal(){try{var s=localStorage.getItem(LS_KEY);if(s)return decodeState(s);}catch(e){}return false;}
+
+function render(){
+  var grid=document.getElementById('wc-grid');
+  var h='';
+  PLAYERS.forEach(function(p){
+    var isSel=selected===p.id;
+    h+='<div class="wc-card'+(isSel?' wc-selected':'')+'" data-id="'+p.id+'" data-name="'+p.name+'" data-team="'+p.team+'" onclick="Q.pick(\''+p.id+'\')">';
+    h+=flag(p.flag);
+    h+='<div class="wc-card-name">'+p.name+'</div>';
+    h+='<div class="wc-card-team">'+p.team+'</div>';
+    h+='</div>';
+  });
+  grid.innerHTML=h;
+  updateBanner();
+}
+
+function updateBanner(){
+  var banner=document.getElementById('wc-banner');
+  if(!selected){banner.classList.add('wc-hidden');return;}
+  var p=PLAYERS.find(function(x){return x.id===selected;});
+  if(!p){banner.classList.add('wc-hidden');return;}
+  banner.classList.remove('wc-hidden');
+  document.getElementById('wc-banner-name').textContent=p.name;
+  document.getElementById('wc-banner-team').innerHTML='<img src="https://flagcdn.com/w40/'+p.flag+'.png" width="16" height="11" class="wc-flag" alt=""> '+p.team;
+}
+
+function pick(id){
+  selected=(selected===id)?null:id;
+  render();
+  saveLocal();
+}
+
+function filter(q){
+  var cards=document.querySelectorAll('#wc-grid .wc-card');
+  var lq=q.toLowerCase();
+  var visible=0;
+  cards.forEach(function(c){
+    var name=c.getAttribute('data-name').toLowerCase();
+    var team=c.getAttribute('data-team').toLowerCase();
+    var show=!lq||name.indexOf(lq)!==-1||team.indexOf(lq)!==-1;
+    c.classList.toggle('wc-hidden',!show);
+    if(show) visible++;
+  });
+  document.getElementById('wc-no-results').style.display=visible===0?'block':'none';
+}
+
+function share(){
+  var s=encodeState();
+  if(!s) return;
+  try{window.parent.postMessage({type:'wc2026-passeur-share',state:s},'*');}catch(e){}
+  var btn=document.getElementById('wc-btn-share');
+  btn.textContent='✅ Lien copié !';btn.classList.add('wc-copied');
+  setTimeout(function(){btn.textContent='📤 Partager mon pronostic';btn.classList.remove('wc-copied');},2500);
+}
+
+function reset(){selected=null;document.getElementById('wc-search-input').value='';render();filter('');saveLocal();}
+
+window.addEventListener('message',function(e){
+  if(e.data&&e.data.type==='wc2026-passeur-load'&&e.data.state){
+    if(decodeState(e.data.state)) render();
+  }
+});
+
+/* Init */
+var urlParams=new URLSearchParams(window.location.search);
+var urlState=urlParams.get('s');
+if(urlState) decodeState(urlState);
+else loadLocal();
+render();
+
+window.Q={pick:pick,filter:filter,share:share,reset:reset};
+
+/* Auto-resize */
+function postHeight(){try{window.parent.postMessage({type:'wc2026-passeur-resize',height:document.getElementById('wc-quiz').scrollHeight},'*');}catch(e){}}
+var _ro=new ResizeObserver(postHeight);
+_ro.observe(document.getElementById('wc-quiz'));
+postHeight();
+})();
+</script>
+</div>
+</body>
+</html>
