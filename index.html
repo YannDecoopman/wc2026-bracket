@@ -15,9 +15,12 @@
 #wc2026 .wc-hdr h1{font-size:22px;font-weight:800;letter-spacing:1px;margin-bottom:4px}
 #wc2026 .wc-hdr h1 span{color:#e2b714}
 #wc2026 .wc-hdr p{font-size:12px;opacity:.75;margin-top:6px}
-#wc2026 .wc-toolbar{display:flex;justify-content:center;gap:12px;padding:10px 16px;background:#f8f9fa;border-bottom:1px solid #e9ecef}
+#wc2026 .wc-toolbar{display:flex;justify-content:center;align-items:center;gap:12px;padding:10px 16px;background:#f8f9fa;border-bottom:1px solid #e9ecef;flex-wrap:wrap}
 #wc2026 .wc-btn{padding:6px 16px;border:1px solid #dee2e6;border-radius:20px;background:#fff;color:#495057;font-size:11px;cursor:pointer;font-weight:600;transition:all .2s}
 #wc2026 .wc-btn:hover{background:#e3f2fd;border-color:#90caf9;color:#1565c0}
+#wc2026 .wc-btn-share{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+#wc2026 .wc-btn-share:hover{background:#0f3460;border-color:#0f3460;color:#fff}
+#wc2026 .wc-btn-share.wc-copied{background:#66bb6a;border-color:#66bb6a;color:#fff}
 #wc2026 .wc-progress{font-size:11px;color:#6c757d;display:flex;align-items:center;gap:6px}
 #wc2026 .wc-progress-bar{width:100px;height:6px;background:#e9ecef;border-radius:3px;overflow:hidden}
 #wc2026 .wc-progress-fill{height:100%;background:linear-gradient(90deg,#e2b714,#f9a825);border-radius:3px;transition:width .3s}
@@ -69,7 +72,7 @@
 #wc2026 .wc-pair{flex:1 1 calc(50% - 10px);min-width:280px;display:flex;gap:6px;position:relative}
 #wc2026 .wc-pair::after{content:attr(data-feed);position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font-size:9px;color:#adb5bd;white-space:nowrap;font-weight:600}
 @media(max-width:600px){#wc2026 .wc-pair{flex:1 1 100%}}
-#wc2026 .wc-match{flex:1;border:2px solid #e9ecef;border-radius:8px;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+#wc2026 .wc-match{flex:1;border:2px solid #e9ecef;border-radius:8px;overflow:hidden;transition:border-color .2s}
 #wc2026 .wc-match.wc-decided{border-color:#90caf9}
 #wc2026 .wc-match-num{text-align:center;font-size:9px;color:#adb5bd;padding:2px 0;background:#fafafa;border-bottom:1px solid #f0f0f0;font-weight:600}
 #wc2026 .wc-slot{display:flex;align-items:center;gap:6px;padding:7px 8px;cursor:pointer;transition:all .15s;position:relative;min-height:30px}
@@ -105,6 +108,7 @@
 
 <div class="wc-toolbar">
 <div class="wc-progress"><span id="wc-prog-text">0 / 32 matchs</span><div class="wc-progress-bar"><div class="wc-progress-fill" id="wc-prog-bar" style="width:0%"></div></div></div>
+<button class="wc-btn wc-btn-share" id="wc-btn-share" onclick="WC.share()">📤 Partager mon bracket</button>
 <button class="wc-btn" onclick="WC.reset()">Réinitialiser</button>
 </div>
 
@@ -120,7 +124,6 @@
 </div>
 
 <div class="wc-divider"></div>
-
 <div id="wc-bracket"></div>
 
 <div class="wc-champion wc-hidden" id="wc-champion">
@@ -158,39 +161,24 @@ G:["BEL","EGY","IRN","NZL"],H:["ESP","CPV","KSA","URU"],I:["FRA","SEN","NOR","PL
 J:["ARG","ALG","AUT","JOR"],K:["POR","UZB","COL","PL1"],L:["ENG","CRO","GHA","PAN"]
 };
 
-/* R32 structure */
 var R32_STRUCT={
-49:{d:'1A vs 3e',pa:'1A',pb:'3',pbSlot:0},
-50:{d:'1B vs 3e',pa:'1B',pb:'3',pbSlot:1},
-51:{d:'2E vs 2F',pa:'2E',pb:'2F'},
-52:{d:'1C vs 3e',pa:'1C',pb:'3',pbSlot:2},
-53:{d:'1D vs 3e',pa:'1D',pb:'3',pbSlot:3},
-54:{d:'2A vs 2B',pa:'2A',pb:'2B'},
-55:{d:'1E vs 2D',pa:'1E',pb:'2D'},
-56:{d:'1F vs 2C',pa:'1F',pb:'2C'},
-57:{d:'1G vs 3e',pa:'1G',pb:'3',pbSlot:4},
-58:{d:'1H vs 3e',pa:'1H',pb:'3',pbSlot:5},
-59:{d:'2K vs 2L',pa:'2K',pb:'2L'},
-60:{d:'1I vs 3e',pa:'1I',pb:'3',pbSlot:6},
-61:{d:'1J vs 3e',pa:'1J',pb:'3',pbSlot:7},
-62:{d:'2G vs 2H',pa:'2G',pb:'2H'},
-63:{d:'1K vs 2J',pa:'1K',pb:'2J'},
-64:{d:'1L vs 2I',pa:'1L',pb:'2I'}
+49:{d:'1A vs 3e',pa:'1A',pb:'3',pbSlot:0},50:{d:'1B vs 3e',pa:'1B',pb:'3',pbSlot:1},
+51:{d:'2E vs 2F',pa:'2E',pb:'2F'},52:{d:'1C vs 3e',pa:'1C',pb:'3',pbSlot:2},
+53:{d:'1D vs 3e',pa:'1D',pb:'3',pbSlot:3},54:{d:'2A vs 2B',pa:'2A',pb:'2B'},
+55:{d:'1E vs 2D',pa:'1E',pb:'2D'},56:{d:'1F vs 2C',pa:'1F',pb:'2C'},
+57:{d:'1G vs 3e',pa:'1G',pb:'3',pbSlot:4},58:{d:'1H vs 3e',pa:'1H',pb:'3',pbSlot:5},
+59:{d:'2K vs 2L',pa:'2K',pb:'2L'},60:{d:'1I vs 3e',pa:'1I',pb:'3',pbSlot:6},
+61:{d:'1J vs 3e',pa:'1J',pb:'3',pbSlot:7},62:{d:'2G vs 2H',pa:'2G',pb:'2H'},
+63:{d:'1K vs 2J',pa:'1K',pb:'2J'},64:{d:'1L vs 2I',pa:'1L',pb:'2I'}
 };
 
-/* 3rd place slot eligibility */
 var THIRD_ELIGIBLE=[
-['B','C','D','E','F','G','H','I','J','K','L'],
-['A','C','D','E','F','G','H','I','J','K','L'],
-['A','B','D','E','F','G','H','I','J','K','L'],
-['A','B','C','E','F','G','H','I','J','K','L'],
-['A','B','C','D','E','F','H','I','J','K','L'],
-['A','B','C','D','E','F','G','I','J','K','L'],
-['A','B','C','D','E','F','G','H','J','K','L'],
-['A','B','C','D','E','F','G','H','I','K','L']
+['B','C','D','E','F','G','H','I','J','K','L'],['A','C','D','E','F','G','H','I','J','K','L'],
+['A','B','D','E','F','G','H','I','J','K','L'],['A','B','C','E','F','G','H','I','J','K','L'],
+['A','B','C','D','E','F','H','I','J','K','L'],['A','B','C','D','E','F','G','I','J','K','L'],
+['A','B','C','D','E','F','G','H','J','K','L'],['A','B','C','D','E','F','G','H','I','K','L']
 ];
 
-/* Later rounds feed structure */
 var M_FEED={
 65:{r:'r16',fa:{m:49,s:'w'},fb:{m:50,s:'w'}},66:{r:'r16',fa:{m:51,s:'w'},fb:{m:52,s:'w'}},
 67:{r:'r16',fa:{m:53,s:'w'},fb:{m:54,s:'w'}},68:{r:'r16',fa:{m:55,s:'w'},fb:{m:56,s:'w'}},
@@ -216,10 +204,37 @@ var ROUNDS=[
 ];
 
 /* STATE */
-var groupRanks={};
-var best3={};
-var thirdAlloc={};
-var winners={};
+var groupRanks={},best3={},thirdAlloc={},winners={};
+var LS_KEY='wc2026_state';
+
+/* STATE SERIALIZATION */
+function encodeState(){
+  try{
+    var obj={g:groupRanks,b:Object.keys(best3).filter(function(k){return best3[k];}),w:winners};
+    return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
+  }catch(e){return null;}
+}
+
+function decodeState(encoded){
+  try{
+    var obj=JSON.parse(decodeURIComponent(escape(atob(encoded))));
+    groupRanks=obj.g||{};
+    best3={};
+    (obj.b||[]).forEach(function(k){best3[k]=true;});
+    winners=obj.w||{};
+    if(Object.keys(best3).length===8) allocateThirds();
+    return true;
+  }catch(e){return false;}
+}
+
+function saveLocal(){
+  try{var s=encodeState();if(s)localStorage.setItem(LS_KEY,s);}catch(e){}
+}
+
+function loadLocal(){
+  try{var s=localStorage.getItem(LS_KEY);if(s)return decodeState(s);}catch(e){}
+  return false;
+}
 
 /* HELPERS */
 function flag(iso){
@@ -234,7 +249,7 @@ function teamHTML(code){
 function allGroupsRanked(){
   var keys=Object.keys(G);
   for(var i=0;i<keys.length;i++){
-    if(!groupRanks[keys[i]] || groupRanks[keys[i]].length<4) return false;
+    if(!groupRanks[keys[i]]||groupRanks[keys[i]].length<4) return false;
   }
   return true;
 }
@@ -268,7 +283,6 @@ function allocateThirds(){
   return true;
 }
 
-/* RESOLVE R32 TEAMS */
 function resolvePos(pos){
   var rank=parseInt(pos[0])-1;
   var grp=pos[1];
@@ -304,7 +318,6 @@ function getTeam(mid,slot){
   return w===ta?tb:ta;
 }
 
-/* BRACKET LOGIC */
 function clearDown(mid){
   var allIds=Object.keys(M_FEED);
   for(var j=0;j<allIds.length;j++){
@@ -317,19 +330,17 @@ function clearDown(mid){
   }
 }
 
-function clearAllKnockout(){
-  winners={};
-}
+function clearAllKnockout(){winners={};}
 
 function selectWinner(mid,team){
   if(winners[mid]===team){delete winners[mid];clearDown(mid);}
   else{if(winners[mid])clearDown(mid);winners[mid]=team;}
   render();
+  saveLocal();
 }
 
 function countDecided(){var c=0;for(var id in winners)c++;return c;}
 
-/* GROUP RANKING */
 function toggleGroupRank(grp,code){
   if(!groupRanks[grp]) groupRanks[grp]=[];
   var arr=groupRanks[grp];
@@ -348,26 +359,40 @@ function toggleGroupRank(grp,code){
     }
   }
   renderAll();
+  saveLocal();
 }
 
-/* BEST 3rd TOGGLE */
 function toggleBest3(grp){
   if(best3[grp]){
-    delete best3[grp];
-    thirdAlloc={};
-    clearAllKnockout();
+    delete best3[grp];thirdAlloc={};clearAllKnockout();
   } else {
     if(best3Count()>=8) return;
     best3[grp]=true;
     if(best3Count()===8){
-      if(!allocateThirds()){
-        delete best3[grp];
-        thirdAlloc={};
-      }
+      if(!allocateThirds()){delete best3[grp];thirdAlloc={};}
     }
     clearAllKnockout();
   }
   renderAll();
+  saveLocal();
+}
+
+/* SHARE */
+function share(){
+  var s=encodeState();
+  if(!s) return;
+  // Notify parent (WordPress page) to update its URL
+  try{
+    window.parent.postMessage({type:'wc2026-share',state:s},'*');
+  }catch(e){}
+  // Feedback on button
+  var btn=document.getElementById('wc-btn-share');
+  btn.textContent='✅ Lien copié !';
+  btn.classList.add('wc-copied');
+  setTimeout(function(){
+    btn.textContent='📤 Partager mon bracket';
+    btn.classList.remove('wc-copied');
+  },2500);
 }
 
 /* RENDERING */
@@ -386,11 +411,7 @@ function renderGroups(){
       var rankCls=rankNum>0?' wc-ranked-'+rankNum:'';
       var playoffCls=(t.playoff&&rankNum===0)?' wc-playoff':'';
       h+='<div class="wc-grp-team'+rankCls+playoffCls+'" data-grp="'+g+'" data-code="'+code+'">';
-      if(rankNum>0){
-        h+='<div class="wc-rank-badge wc-r'+rankNum+'">'+rankNum+'</div>';
-      } else {
-        h+='<div class="wc-rank-empty"></div>';
-      }
+      h+=(rankNum>0)?'<div class="wc-rank-badge wc-r'+rankNum+'">'+rankNum+'</div>':'<div class="wc-rank-empty"></div>';
       h+=flag(t.f)+'<span>'+t.n+'</span>';
       h+='</div>';
     });
@@ -413,8 +434,7 @@ function renderBest3(){
   var count=best3Count();
   counter.textContent=count+' / 8';
   var h='';
-  var keys=Object.keys(G);
-  keys.forEach(function(g){
+  Object.keys(G).forEach(function(g){
     var thirdCode=groupRanks[g][2];
     var t=T[thirdCode];
     var isSel=!!best3[g];
@@ -427,52 +447,41 @@ function renderBest3(){
   });
   grid.innerHTML=h;
   grid.querySelectorAll('.wc-b3-card:not(.wc-disabled)').forEach(function(el){
-    el.addEventListener('click',function(){
-      toggleBest3(this.getAttribute('data-grp'));
-    });
+    el.addEventListener('click',function(){toggleBest3(this.getAttribute('data-grp'));});
   });
 }
 
 function renderMatch(mid){
   var ta=getTeam(mid,'a'),tb=getTeam(mid,'b');
   var w=winners[mid];
-  var decided=!!w;
   var clsA='wc-slot',clsB='wc-slot';
-  if(w){
-    if(w===ta){clsA+=' wc-winner';clsB+=' wc-loser';}
-    else{clsB+=' wc-winner';clsA+=' wc-loser';}
-  }
+  if(w){clsA+=w===ta?' wc-winner':' wc-loser';clsB+=w===tb?' wc-winner':' wc-loser';}
   if(!ta)clsA+=' wc-empty';
   if(!tb)clsB+=' wc-empty';
   var desc=R32_STRUCT[mid]?R32_STRUCT[mid].d:('M'+mid);
-  var html='<div class="wc-match'+(decided?' wc-decided':'')+'" data-mid="'+mid+'">';
-  html+='<div class="wc-match-num">'+desc+'</div>';
-  html+='<div class="'+clsA+'" data-mid="'+mid+'" data-team="'+(ta||'')+'" data-side="a">'+teamHTML(ta)+'</div>';
-  html+='<div class="'+clsB+'" data-mid="'+mid+'" data-team="'+(tb||'')+'" data-side="b">'+teamHTML(tb)+'</div>';
-  html+='</div>';
-  return html;
+  return '<div class="wc-match'+(w?' wc-decided':'')+'">'
+    +'<div class="wc-match-num">'+desc+'</div>'
+    +'<div class="'+clsA+'" data-mid="'+mid+'" data-team="'+(ta||'')+'" data-side="a">'+teamHTML(ta)+'</div>'
+    +'<div class="'+clsB+'" data-mid="'+mid+'" data-team="'+(tb||'')+'" data-side="b">'+teamHTML(tb)+'</div>'
+    +'</div>';
 }
 
 function renderMatchInner(mid){
   var ta=getTeam(mid,'a'),tb=getTeam(mid,'b');
   var w=winners[mid];
   var clsA='wc-slot',clsB='wc-slot';
-  if(w){
-    if(w===ta){clsA+=' wc-winner';clsB+=' wc-loser';}
-    else{clsB+=' wc-winner';clsA+=' wc-loser';}
-  }
+  if(w){clsA+=w===ta?' wc-winner':' wc-loser';clsB+=w===tb?' wc-winner':' wc-loser';}
   if(!ta)clsA+=' wc-empty';
   if(!tb)clsB+=' wc-empty';
-  return '<div class="'+clsA+'" data-mid="'+mid+'" data-team="'+(ta||'')+'" data-side="a">'+teamHTML(ta)+'</div>'+
-         '<div class="'+clsB+'" data-mid="'+mid+'" data-team="'+(tb||'')+'" data-side="b">'+teamHTML(tb)+'</div>';
+  return '<div class="'+clsA+'" data-mid="'+mid+'" data-team="'+(ta||'')+'" data-side="a">'+teamHTML(ta)+'</div>'
+        +'<div class="'+clsB+'" data-mid="'+mid+'" data-team="'+(tb||'')+'" data-side="b">'+teamHTML(tb)+'</div>';
 }
 
 function renderBracket(){
   var el=document.getElementById('wc-bracket');
   var h='';
   ROUNDS.forEach(function(round){
-    h+='<div class="wc-round">';
-    h+='<div class="wc-round-title">'+round.label+'<span class="wc-round-sub">'+round.sub+'</span></div>';
+    h+='<div class="wc-round"><div class="wc-round-title">'+round.label+'<span class="wc-round-sub">'+round.sub+'</span></div>';
     h+='<div class="wc-pairs" style="margin-bottom:20px;">';
     round.pairs.forEach(function(pair,i){
       h+='<div class="wc-pair" data-feed="'+round.feeds[i]+'">';
@@ -481,11 +490,10 @@ function renderBracket(){
     });
     h+='</div></div>';
   });
-  h+='<div class="wc-round">';
-  h+='<div class="wc-round-title">Demi-finales<span class="wc-round-sub">4 équipes · 2 matchs</span></div>';
+  h+='<div class="wc-round"><div class="wc-round-title">Demi-finales<span class="wc-round-sub">4 équipes · 2 matchs</span></div>';
   h+='<div class="wc-pairs" style="margin-bottom:8px;">';
-  h+='<div class="wc-pair" data-feed="">'+renderMatch(77)+'</div>';
-  h+='<div class="wc-pair" data-feed="">'+renderMatch(78)+'</div>';
+  h+='<div class="wc-pair">'+renderMatch(77)+'</div>';
+  h+='<div class="wc-pair">'+renderMatch(78)+'</div>';
   h+='</div></div>';
   h+='<div class="wc-sf-final">';
   h+='<div class="wc-sf-block"><div class="wc-sf-block-title">Petite finale · 3e place</div>';
@@ -498,7 +506,7 @@ function renderBracket(){
     slot.addEventListener('click',function(){
       var mid=parseInt(this.getAttribute('data-mid'));
       var team=this.getAttribute('data-team');
-      if(team)selectWinner(mid,team);
+      if(team) selectWinner(mid,team);
     });
   });
 }
@@ -508,9 +516,8 @@ function renderChampion(){
   var teamEl=document.getElementById('wc-champion-team');
   var w=winners[80];
   if(w){
-    var t=T[w];
     el.classList.remove('wc-hidden');
-    teamEl.innerHTML=flag(t.f).replace('width="20" height="14"','width="36" height="25"')+' '+t.n;
+    teamEl.innerHTML=flag(T[w].f).replace('width="20" height="14"','width="36" height="25"')+' '+T[w].n;
   } else {
     el.classList.add('wc-hidden');
   }
@@ -522,29 +529,28 @@ function updateProgress(){
   document.getElementById('wc-prog-bar').style.width=Math.round(c/32*100)+'%';
 }
 
-function render(){
-  renderBracket();
-  renderChampion();
-  updateProgress();
-}
+function render(){renderBracket();renderChampion();updateProgress();}
+function renderAll(){renderGroups();renderBest3();render();}
 
-function renderAll(){
-  renderGroups();
-  renderBest3();
-  render();
-}
+function reset(){groupRanks={};best3={};thirdAlloc={};winners={};saveLocal();renderAll();}
 
-function reset(){
-  groupRanks={};best3={};thirdAlloc={};winners={};
-  renderAll();
-}
+/* LISTEN FOR STATE FROM PARENT */
+window.addEventListener('message',function(e){
+  if(e.data&&e.data.type==='wc2026-load'&&e.data.state){
+    if(decodeState(e.data.state)){renderAll();}
+  }
+});
 
-/* Init */
+/* Init: load from URL param first, then localStorage */
+var urlParams=new URLSearchParams(window.location.search);
+var urlState=urlParams.get('s');
+if(urlState){decodeState(urlState);}
+else{loadLocal();}
 renderAll();
 
-window.WC={select:selectWinner,reset:reset};
+window.WC={select:selectWinner,reset:reset,share:share};
 
-/* Auto-resize for iframe embedding */
+/* Auto-resize for iframe */
 function postHeight(){
   try{window.parent.postMessage({type:'wc2026-resize',height:document.getElementById('wc2026').scrollHeight},'*');}catch(e){}
 }
